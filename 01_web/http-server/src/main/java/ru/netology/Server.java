@@ -6,6 +6,8 @@ import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -28,7 +30,9 @@ public class Server {
     public void start() {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             while (true) {
-                executorService.submit(new Thread(() -> connect(serverSocket)));
+                final var clientSocket = serverSocket.accept();
+                executorService.submit(new Thread(()->connect(clientSocket)));
+                //executorService.submit(new Thread(() -> connect(serverSocket)));
             }
         } catch (IOException e) {
             System.out.println("ошибка");
@@ -36,9 +40,10 @@ public class Server {
 
     }
 
-    private void connect(ServerSocket serverSocket) {
+    private void connect(Socket clientSocket) {
+        System.out.println(Thread.currentThread().getName());
         try (
-                final var clientSocket = serverSocket.accept();
+                //final var clientSocket = serverSocket.accept();
                 final var in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 final var out = new BufferedOutputStream(clientSocket.getOutputStream())
         ) {
@@ -96,4 +101,5 @@ public class Server {
             System.out.println(e.getMessage());
         }
     }
+
 }
