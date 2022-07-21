@@ -5,6 +5,7 @@ import ru.netology.model.Post;
 import ru.netology.service.PostService;
 
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -16,7 +17,7 @@ public class PostController {
   }
 
   @GetMapping
-  public List<Post> all() {
+  public List<String> all() {
     return service.all();
   }
 
@@ -31,7 +32,7 @@ public class PostController {
   }
 
   @DeleteMapping("/{id}")
-  public void removeById(long id) {
-    service.removeById(id);
+  public boolean removeById(@PathVariable long id) {
+   return service.removeById(id);
   }
 }

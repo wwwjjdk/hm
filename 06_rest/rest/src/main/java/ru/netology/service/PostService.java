@@ -5,7 +5,10 @@ import ru.netology.exception.NotFoundException;
 import ru.netology.model.Post;
 import ru.netology.repository.PostRepository;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class PostService {
@@ -16,8 +19,14 @@ public class PostService {
     this.repository = repository;
   }
 
-  public List<Post> all() {
-    return repository.all();
+  public List<String> all() {
+    List<String> array = new ArrayList<>();
+    repository.all().forEach((k,y)->{
+      if(!y.isRemoved()){
+        array.add(y.getId()+" "+y.getContent());
+      }
+    });
+    return array;
   }
 
   public Post getById(long id) {
@@ -28,8 +37,8 @@ public class PostService {
     return repository.save(post);
   }
 
-  public void removeById(long id) {
-    repository.removeById(id);
+  public boolean removeById(long id) {
+    return repository.removeById(id);
   }
 }
 
