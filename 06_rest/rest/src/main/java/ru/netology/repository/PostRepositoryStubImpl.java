@@ -6,10 +6,12 @@ import ru.netology.model.Post;
 
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class PostRepositoryStubImpl implements PostRepository {
   private ConcurrentHashMap<Long,Post> map = new ConcurrentHashMap<>();
+  private AtomicLong atomicLong = new AtomicLong();
   public ConcurrentHashMap<Long,Post> all() {
     return map;
   }
@@ -27,7 +29,8 @@ public class PostRepositoryStubImpl implements PostRepository {
 
   public Post save(Post post) {
     if(post.getId()==0){
-      post.setId((long)Math.floor(Math.random()*10_000));
+      long atomicId = atomicLong.incrementAndGet();
+      post.setId(atomicId);
       map.put(post.getId(), post);
     }else if(post.getId()!=0){
       if(map.containsKey(post.getId())){
