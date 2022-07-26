@@ -1,10 +1,14 @@
 package ru.netology.model;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.Expose;
+
 public class Post {
   private long id;
   private String content;
 
-  private boolean removed;
+  private transient boolean removed;
 
   public Post() {
   }
@@ -38,4 +42,6 @@ public class Post {
   public void setContent(String content) {
     this.content = content;
   }
+
+
 }

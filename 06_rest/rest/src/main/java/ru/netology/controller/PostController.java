@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.netology.model.Post;
 import ru.netology.service.PostService;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -17,7 +18,7 @@ public class PostController {
   }
 
   @GetMapping
-  public List<String> all() {
+  public Collection<Post> all() {
     return service.all();
   }
 
@@ -32,7 +33,7 @@ public class PostController {
   }
 
   @DeleteMapping("/{id}")
-  public boolean removeById(@PathVariable long id) {
-   return service.removeById(id);
+  public void removeById(@PathVariable long id) {
+      service.removeById(id);
   }
 }

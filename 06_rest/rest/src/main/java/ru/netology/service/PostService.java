@@ -6,7 +6,9 @@ import ru.netology.model.Post;
 import ru.netology.repository.PostRepository;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -18,14 +20,14 @@ public class PostService {
     this.repository = repository;
   }
 
-  public List<String> all() {
-    List<String> array = new ArrayList<>();
-    repository.all().forEach((k,y)->{
-      if(!y.isRemoved()){
-        array.add(y.getId()+" "+y.getContent());
+  public List<Post> all() {
+    List<Post> trueArray = new ArrayList<>();
+    repository.all().stream().forEach((x)->{
+      if(!x.isRemoved()){
+        trueArray.add(x);
       }
     });
-    return array;
+    return  trueArray;
   }
 
   public Post getById(long id) {
@@ -36,8 +38,8 @@ public class PostService {
     return repository.save(post);
   }
 
-  public boolean removeById(long id) {
-    return repository.removeById(id);
+  public void removeById(long id) {
+    repository.removeById(id);
   }
 }
 
